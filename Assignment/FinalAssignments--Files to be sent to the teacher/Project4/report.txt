@@ -1,0 +1,27 @@
+
+1. Hours to complete the project: ... hours
+	It took me around 8 hours to complete this project.
+2. Provide a short description of how you approached each problem, issues you 
+   encountered, and how you resolved those issues.
+	
+   Problem 1 (Ring Buffer): ...
+	
+	The only problem I faced in this problem was maintaining the first, last and size variables, as these three variables are used for enqueuing and dequeuing.
+ 
+   Problem 2 (Guitar String): ...
+	In this problem the only issue was understanding and implementing the Karplus-Strong decay factor update. Which I handled by debugging and dry running the algorithm.
+
+3. Did you receive help from anyone? List their names, status (classmate, 
+   CS110 grad, TA, other), and the nature of help received.
+
+   Name               Status       Help Received
+   ----               ------       -------------
+
+   ...                ...          ...
+
+4. List any other comments here. Feel free to provide any feedback on how
+   much you learned from doing the assignment, and whether you enjoyed
+   doing it.
+	This assignment was a tough but an exciting one, learning the physics behind guitar string got me going as I myself have interest in music. And actually implementing the way guitar strings work was fun.
+
+   ...
