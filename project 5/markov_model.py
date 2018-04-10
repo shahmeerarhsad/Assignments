@@ -7,6 +7,7 @@ A data type that represents a Markov model of order k from a given text string.
 import stdio
 import sys
 import random
+import stdrandom
 
 
 class MarkovModel(object):
@@ -26,9 +27,10 @@ class MarkovModel(object):
         for i in range(len(circ_text) - k):
             x = circ_text[i:i+k]
             y = circ_text[i+k]
-            self._st.setdefault(circ_text[i:i + k], {}).setdefault(circ_text[i+k], 0)
+            self._st.setdefault(circ_text[i:i + k], {}).\
+                setdefault(circ_text[i+k], 0)
+
             self._st[x][y] += 1
-    
 
     def order(self):
         """
@@ -36,7 +38,6 @@ class MarkovModel(object):
         """
 
         return self._k
-    
 
     def kgram_freq(self, kgram):
         """
@@ -76,8 +77,12 @@ class MarkovModel(object):
                              str(self._k))
         if kgram not in self._st:
             raise ValueError('Unknown kgram ' + kgram)
-
-        return random.choice(self._st[kgram].keys())
+        a = []
+        for i in range(0, len(self._st[kgram])):
+            a.append(float(self._st[kgram].values()[i] /
+                           (self.kgram_freq(kgram) * 1.0)))
+        highest_prob_char = stdrandom.discrete(a)
+        return self._st[kgram].keys()[highest_prob_char]
 
     def gen(self, kgram, T):
         """
@@ -91,6 +96,45 @@ class MarkovModel(object):
             text += self.rand(kgram)
             kgram = text[-self._k:]
         return text
+
+    def replace_unknown(self, corrupted):
+        """
+        Replaces unknown characters (~) in corrupted with most probable
+        characters, and returns that string.
+        """
+
+        # Given a list a, argmax returns the index of the maximum element in a.
+        def argmax(a):
+            return a.index(max(a))
+
+        original = ''
+        for i in range(len(corrupted)):
+            if corrupted[i] == '~':
+                kgram_before = corrupted[i - self._k:i]
+                kgram_after = corrupted[i + 1: i + self._k + 1]
+                probs = []
+                if bool(kgram_before in self._st.keys()):
+                    hypothesis = self._st[kgram_before].keys()
+                    for hypothesees in hypothesis:
+                        context = kgram_before + hypothesees + kgram_after
+                        p = 1.0
+                        for i in range(0, self._k + 1):
+                            kgram = context[i:self._k + i]
+                            char = context[self._k + i]
+                            if bool(kgram in self._st.keys()) and \
+                                    bool(char in self._st[kgram].keys()):
+                                charr_prob = (float(self.char_freq(kgram, char) * 1.0  # noqa
+                                                    / (self.kgram_freq(kgram) * 1.0)))  # noqa
+                                p *= charr_prob
+                            else:
+                                p = 0
+                                break
+                        probs.append(p)
+                max_prob = hypothesis[argmax(probs)]
+                original += max_prob
+            else:
+                original += corrupted[i]
+        return original
 
 
 def _main():
