@@ -23,5 +23,6 @@ def _main():
     dna = sys.argv[1]
     stdio.writeln(wc_complement(dna.upper()))
 
+
 if __name__ == '__main__':
     _main()

@@ -18,11 +18,11 @@ def is_valid(pwd):
             elif i.isdigit():
                 number += 1
             else:
-                 symbol += 1
+                symbol += 1
         if(upper_case > 0 and lower_case > 0 and number > 0 and symbol > 0):
             return True
         else:
-           return False
+            return False
     else:
         return False
 
@@ -32,6 +32,7 @@ def is_valid(pwd):
 def _main():
     pwd = sys.argv[1]
     stdio.writeln(is_valid(pwd))
+
 
 if __name__ == '__main__':
     _main()

@@ -37,5 +37,6 @@ def _main():
     words = stdio.readAllStrings()
     write_word_frequencies(count_word_frequencies(words))
 
+
 if __name__ == '__main__':
     _main()
